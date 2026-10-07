@@ -1,0 +1,4 @@
+__pycache__/
+.pytest_cache/
+truecount-mutation.json
+.truecount-mutate-backup/
