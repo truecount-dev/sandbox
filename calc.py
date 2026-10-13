@@ -5,3 +5,10 @@ def clamp(n, low, high):
     if n > high:
         return high
     return n
+
+
+def share(part, whole):
+    """part as a fraction of whole; 0 when whole is 0."""
+    if whole == 0:
+        return 0
+    return part / whole
