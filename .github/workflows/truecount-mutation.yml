@@ -1,9 +1,19 @@
 name: Truecount mutation check
-on: pull_request
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, labeled]
 permissions:
   contents: read
 jobs:
   mutation:
+    # Not on drafts. Of all the labels, only `truecount: all tests` starts a run.
+    if: >-
+      github.event.pull_request.draft == false &&
+      (github.event.action != 'labeled' || github.event.label.name == 'truecount: all tests')
+    # A new push cancels the run it replaces.
+    concurrency:
+      group: truecount-mutation-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -16,3 +26,6 @@ jobs:
       - uses: truecount-dev/truecount-action@v0
         with:
           test-command: python -m pytest -x -q
+          related-test-command: python -m pytest -x -q {tests}
+          # Quoted: the label's ": " would otherwise end the YAML value early.
+          all-tests: "${{ contains(github.event.pull_request.labels.*.name, 'truecount: all tests') }}"
