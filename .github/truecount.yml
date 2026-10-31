@@ -1,0 +1,6 @@
+# Truecount's own sandbox. `beta` gets candidate models first and test-gap
+# review before it is released to everyone; `test_gaps` asks for one on every
+# pull request. Read from a pull request's base commit, so it takes effect for
+# pull requests opened after this is merged.
+channel: beta
+test_gaps: true
