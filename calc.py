@@ -3,7 +3,7 @@ def clamp(n, low, high):
     if n < low:
         return low
     if n > high:
-        return high
+        return low
     return n
 
 
