@@ -1,0 +1,41 @@
+name: Truecount bug reproduction
+
+on:
+  issues:
+    types: [opened, labeled]
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: The issue number
+        required: true
+
+permissions:
+  contents: read
+  issues: read
+  id-token: write   # how Truecount knows which repository and run is asking
+
+concurrency:
+  group: truecount-repro-${{ github.event.issue.number || inputs.issue }}
+  cancel-in-progress: true
+
+jobs:
+  reproduce:
+    # A new issue, or a maintainer asking with the label. Truecount checks
+    # that whoever triggered the run has write access.
+    if: >-
+      github.event_name == 'workflow_dispatch' || github.event.action == 'opened' ||
+      github.event.label.name == 'truecount: reproduce'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false   # keep the job's token out of .git/config
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip install pytest
+      - uses: truecount-dev/truecount-action/bug-repro@v0
+        with:
+          test-command: python -m pytest -q {tests}
+          issue: ${{ github.event.issue.number || inputs.issue }}
