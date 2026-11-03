@@ -11,3 +11,8 @@ def test_inside():
 
 def test_share():
     assert share(1, 4) == 0.25
+
+
+def test_average_empty():
+    from calc import average
+    assert average([]) == 0
