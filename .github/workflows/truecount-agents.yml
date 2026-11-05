@@ -11,4 +11,4 @@ permissions:
 
 jobs:
   truecount:
-    uses: truecount-dev/truecount-action/.github/workflows/agents.yml@agent-errors
+    uses: truecount-dev/truecount-action/.github/workflows/agents.yml@bff0c3177c3c2f2068297453ac05f86024e324c6  # main, truecount-action#15
