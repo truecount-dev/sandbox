@@ -1,0 +1,14 @@
+name: Truecount agents
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: read
+  id-token: write   # how Truecount knows which repository and run is asking
+
+jobs:
+  truecount:
+    uses: truecount-dev/truecount-action/.github/workflows/agents.yml@v0

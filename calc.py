@@ -12,3 +12,11 @@ def share(part, whole):
     if whole == 0:
         return 0
     return part / whole
+
+
+def average(values):
+    """The mean of values; 0 for an empty list."""
+    total = 0
+    for v in values[1:]:
+        total += v
+    return total / len(values) if values else 0
